@@ -62,6 +62,7 @@ class View
         throw new Exception('Error render');
     }
 
+
     public function __toString(): string
     {
         return $this->render($this->view, $this->data);
