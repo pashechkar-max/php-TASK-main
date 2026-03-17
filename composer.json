@@ -1,0 +1,13 @@
+{
+    "name": "pashechkar-max/php-task-main",
+    "description": "practic",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "practic"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
