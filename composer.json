@@ -1,13 +1,25 @@
 {
     "name": "pashechkar-max/php-task-main",
-    "description": "practic",
+    "description": "Simple mvc framework",
     "type": "project",
     "license": "MIT",
     "authors": [
         {
-            "name": "practic"
+            "name": "pashechkar-max",
+            "email": "polina.ushakova.2007@internet.ru"
         }
     ],
     "minimum-stability": "dev",
-    "require": {}
+    "require": {
+        "php": "^7.4 | ^8.0",
+        "illuminate/database": "12.x-dev",
+        "illuminate/events": "12.x-dev"
+
+    },
+    "autoload": {
+        "psr-4": {
+            "Src\\": "core/Src/",
+            "": "app/"
+        }
+    }
 }
