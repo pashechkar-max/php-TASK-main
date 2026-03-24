@@ -4,6 +4,9 @@ namespace Controller;
 
 use Model\Staffs;
 use Model\Items;
+use Model\Supplies;
+use Model\Departments;
+use Model\Issues;
 use Src\View;
 use Src\Request;
 use Model\User;
@@ -18,10 +21,29 @@ class Site
         return (new View())->render('site.staffs', ['staffs' => $staff]);
     }
 
+    public function issues(): string
+    {
+        $issue = Issues::all();
+        return (new View())->render('site.issues', ['issues' => $issue]);
+    }
+
+    public function departments(): string
+    {
+        $department = Departments::all();
+        return (new View())->render('site.departments', ['departments' => $department]);
+    }
+
+
     public function items(): string
     {
         $items = Items::all();
         return (new View())->render('site.items', ['items' => $items]);
+    }
+
+    public function supplies(): string
+    {
+        $supply = Supplies::all();
+        return (new View())->render('site.supplies', ['supplies' => $supply]);
     }
 
     public function home()

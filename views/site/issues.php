@@ -1,7 +1,7 @@
-<h1>Товары</h1>
+<h1>Срок товара</h1>
 <ol>
     <?php
-    foreach ($items as $item) {
+    foreach ($issues as $item) {
         echo '<h1>' . $item->item_name . '</h1>';
         echo '<li>' . $item->unit_of_measure . '</li>';
         echo '<li>' . $item->current_stock . '</li>';

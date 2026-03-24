@@ -22,6 +22,9 @@
             <a href="<?= app()->route->getUrl('/logout') ?>">Выход (<?= app()->auth::user()->full_name ?>)</a>
             <a href="<?= app()->route->getUrl('/staffs') ?>">Персонал</a>
             <a href="<?= app()->route->getUrl('/items') ?>">Товары</a>
+            <a href="<?= app()->route->getUrl('/supplies') ?>">Поставки</a>
+            <a href="<?= app()->route->getUrl('/departments') ?>">Поставщики</a>
+            <a href="<?= app()->route->getUrl('/issues') ?>">Сроки товаров</a>
         <?php
         endif;
         ?>
