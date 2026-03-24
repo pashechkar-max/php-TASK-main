@@ -1,16 +1,16 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Pop it MVC</title>
+    <title>php-TASK-main</title>
 </head>
 <body>
 <header>
     <nav>
-        <a href="<?= app()->route->getUrl('/hello') ?>">Главная</a>
+        <a href="<?= app()->route->getUrl('/home') ?>">Главная</a>
         <?php
         if (!app()->auth::check()):
             ?>
@@ -19,7 +19,9 @@
         <?php
         else:
             ?>
-            <a href="<?= app()->route->getUrl('/logout') ?>">Выход (<?= app()->auth::user()->name ?>)</a>
+            <a href="<?= app()->route->getUrl('/logout') ?>">Выход (<?= app()->auth::user()->full_name ?>)</a>
+            <a href="<?= app()->route->getUrl('/staffs') ?>">Персонал</a>
+            <a href="<?= app()->route->getUrl('/items') ?>">Товары</a>
         <?php
         endif;
         ?>

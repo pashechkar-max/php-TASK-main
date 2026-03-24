@@ -2,7 +2,8 @@
 
 namespace Controller;
 
-use Model\Post;
+use Model\Staffs;
+use Model\Items;
 use Src\View;
 use Src\Request;
 use Model\User;
@@ -11,31 +12,30 @@ use Src\Validator\Validator;
 
 class Site
 {
-    public function index(Request $request): string
+    public function staffs(): string
     {
-        $posts = Post::where('id', $request->id)->get();
-        return (new View())->render('site.post', ['posts' => $posts]);
+        $staff = Staffs::all();
+        return (new View())->render('site.staffs', ['staffs' => $staff]);
     }
 
-    public function hello(): string
+    public function items(): string
     {
-        return new View('site.hello', ['message' => 'hello working']);
+        $items = Items::all();
+        return (new View())->render('site.items', ['items' => $items]);
     }
 
-//    public function signup(Request $request): string
-//    {
-//        if ($request->method==='POST' && User::create($request->all())){
-//            return new View('site.signup', ['message'=>'Вы успешно зарегистрированы']);
-//        }
-//        return new View('site.signup');
-//    }
+    public function home()
+    {
+        // Создаем объект и сразу просим его отрисовать шаблон в строку
+        return (new View())->render('site.home');
+    }
 
     public function signup(Request $request): string
     {
         if ($request->method === 'POST') {
 
             $validator = new Validator($request->all(), [
-                'name' => ['required'],
+                'full_name' => ['required'],
                 'login' => ['required', 'unique:users,login'],
                 'password' => ['required']
             ], [
@@ -63,7 +63,7 @@ class Site
         }
         //Если удалось аутентифицировать пользователя, то редирект
         if (Auth::attempt($request->all())) {
-            app()->route->redirect('/hello');
+            app()->route->redirect('/home');
         }
         //Если аутентификация не удалась, то сообщение об ошибке
         return new View('site.login', ['message' => 'Неправильные логин или пароль']);
@@ -72,7 +72,7 @@ class Site
     public function logout(): void
     {
         Auth::logout();
-        app()->route->redirect('/hello');
+        app()->route->redirect('/signup');
     }
 
 
