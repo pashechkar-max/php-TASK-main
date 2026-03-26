@@ -1,12 +1,13 @@
-<h1>Поставщики</h1>
-<ol>
-    <?php
-    foreach ($departments as $item) {
-        echo '<h1>' . $item->item_name . '</h1>';
-        echo '<li>' . $item->unit_of_measure . '</li>';
-        echo '<li>' . $item->current_stock . '</li>';
-        echo '<li>' . $item->min_threshold . '</li>';
-        echo '<li>' . $item->sku . '</li>';
-    }
-    ?>
-</ol>
+<h1>Список подразделений </h1>
+    <table class="table">
+        <tr>
+            <th>НАЗВАНИЕ</th>
+            <th>АДРЕС</th>
+        </tr>
+        <?php foreach ($departments as $item): ?>
+        <tr>
+            <td><?=$item->department_name ?></td>
+            <td><?= $item->location ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </table>

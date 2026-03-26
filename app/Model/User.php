@@ -6,16 +6,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Src\Auth\IdentityInterface;
 
-
-
 class User extends Model implements IdentityInterface
 {
     use HasFactory;
 
     public $timestamps = false;
-    protected $primaryKey = 'users_id';
+    protected $primaryKey = 'user_id';
     protected $fillable = [
-        'full_name',
+        'surname',
+        'name',
+        'patronymic',
+        'birth_date',
+        'email',
         'login',
         'password'
     ];
@@ -31,13 +33,13 @@ class User extends Model implements IdentityInterface
     //Выборка пользователя по первичному ключу
     public function findIdentity(int $id)
     {
-        return self::where('users_id', $id)->first();
+        return self::where('user_id', $id)->first();
     }
 
     //Возврат первичного ключа
     public function getId(): int
     {
-        return $this->users_id;
+        return $this->user_id;
     }
 
     //Возврат аутентифицированного пользователя
@@ -45,6 +47,11 @@ class User extends Model implements IdentityInterface
     {
         return self::where(['login' => $credentials['login'],
             'password' => md5($credentials['password'])])->first();
+    }
+
+    public function staff()
+    {
+        return $this->hasOne(Staffs::class, 'user_id', 'user_id');
     }
 }
 

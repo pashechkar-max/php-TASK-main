@@ -10,7 +10,6 @@
 <body>
 <header>
     <nav>
-        <a href="<?= app()->route->getUrl('/home') ?>">Главная</a>
         <?php
         if (!app()->auth::check()):
             ?>
@@ -19,12 +18,17 @@
         <?php
         else:
             ?>
-            <a href="<?= app()->route->getUrl('/logout') ?>">Выход (<?= app()->auth::user()->full_name ?>)</a>
-            <a href="<?= app()->route->getUrl('/staffs') ?>">Персонал</a>
+
+        <?php if (app()->auth::user()->staff->role_id == 1): ?>
+            <a href="<?= app()->route->getUrl('/staffs') ?>">Сотрудники</a>
+            <a href="<?= app()->route->getUrl('/departments') ?>">Подразделения</a>
             <a href="<?= app()->route->getUrl('/items') ?>">Товары</a>
+        <?php endif; ?>
+
             <a href="<?= app()->route->getUrl('/supplies') ?>">Поставки</a>
-            <a href="<?= app()->route->getUrl('/departments') ?>">Поставщики</a>
-            <a href="<?= app()->route->getUrl('/issues') ?>">Сроки товаров</a>
+            <a href="<?= app()->route->getUrl('/issues') ?>">Списание</a>
+            <a href="<?= app()->route->getUrl('/profile') ?>">Профиль</a>
+            <a href="<?= app()->route->getUrl('/logout') ?>">Выход</a>
         <?php
         endif;
         ?>

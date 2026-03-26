@@ -9,4 +9,9 @@ class Items extends Model
 {
     use HasFactory;
     public $timestamps = false;
+
+    protected $table = 'items';
+    protected $primaryKey = 'item_id';
+
+
 }
