@@ -1,5 +1,8 @@
-<h1>Списание товаров</h1>
+<div class="form-table item">
 <table class="table">
+    <div class="group-row">
+        <h2 class="form-title">Списание</h2>
+    </div>
     <tr>
         <th>НАЗВАНИЕ</th>
         <th>АРТИКУЛ</th>
@@ -19,5 +22,6 @@
         </tr>
     <?php endforeach; ?>
 </table>
+</div>
 
 

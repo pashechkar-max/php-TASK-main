@@ -1,4 +1,7 @@
-<h1>Список подразделений </h1>
+<div class="form-table dep">
+    <div class="group-row">
+<h1 class="form-title">Список подразделений </h1>
+    </div>
     <table class="table">
         <tr>
             <th>НАЗВАНИЕ</th>
@@ -11,3 +14,4 @@
         </tr>
         <?php endforeach; ?>
     </table>
+</div>

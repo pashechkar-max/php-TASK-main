@@ -1,33 +1,38 @@
-<div class="container mt-2">
-    <div class="card shadow col-md-4">
-        <div class="card-body">
-            <h2>Здравствуйте, <?= app()->auth::user()->name ?> <?= app()->auth::user()->patronymic ?></h2>
+        <div class="card">
+            <?php
+            $user = app()->auth::user();
+            $avatar = !empty($user->avatar) ? $user->avatar : 'default-avatar.png';
+            $avatarPath = __DIR__ . '/../../public/uploads/avatars/' . $avatar; // для PHP
+            $avatarUrl = '/php-TASK-main/public/uploads/avatars/' . $avatar;     // для тега <img>
+            ?>
 
             <table class="table">
                 <tr>
+                    <th><img src="<?= $avatarUrl ?>" alt="Аватар"></th>
+                    <td>
+                        <h2><?= $user->login ?></h2>
+                    </td>
+                </tr>
+                <tr>
                     <th>ФАМИЛИЯ</th>
-                    <td><?= app()->auth::user()->surname ?></td>
+                    <td><?= $user->surname ?></td>
                 </tr>
                 <tr>
                     <th>ИМЯ</th>
-                    <td><?= app()->auth::user()->name ?></td>
+                    <td><?= $user->name ?></td>
                 </tr>
                 <tr>
                     <th>ОТЧЕСТВО</th>
-                    <td><?= app()->auth::user()->patronymic ?></td>
+                    <td><?= $user->patronymic ?></td>
                 </tr>
                 <tr>
-                    <th>EMAIL</th>
-                    <td><?= app()->auth::user()->email ?></td>
-                </tr>
-                <tr>
-                    <th>ЛОГИН</th>
-                    <td><?= app()->auth::user()->login ?></td>
+                    <th>ПОЧТА</th>
+                    <td><?= $user->email ?></td>
                 </tr>
             </table>
+            <a href="<?= app()->route->getUrl('/profile/edit') ?>" class="avatar">
+                Изменить профиль
+            </a>
 
-            <a href="<?= app()->route->getUrl('/profile/edit') ?>" class="btn edit">Редактировать профиль</a>
 
         </div>
-    </div>
-</div>

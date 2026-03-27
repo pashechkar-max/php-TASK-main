@@ -1,29 +1,38 @@
-<div class="container mt-2">
-    <div class="card shadow col-md-4">
-        <div class="card-body ">
-            <h2 class="mb-4">Редактирование профиля</h2>
+<div class="form-card">
+            <h2 class="form-title">Редактирование профиля</h2>
 
-            <form method="post">
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="avatar" id="file" class="input-file">
+        <label for="file" class="avatar">Изменить аватар</label>
 
-                <input type="text" name="surname" class="form"
+                <label>Фамилия
+                <input type="text" name="surname"
                        value="<?= $user->surname ?>" placeholder="Фамилия">
-
-                <input type="text" name="name" class="form"
+                </label>
+                <label>Имя
+                <input type="text" name="name"
                        value="<?= $user->name ?>" placeholder="Имя">
-
-                <input type="text" name="patronymic" class="form"
+                </label>
+                <label>Отчество
+                <input type="text" name="patronymic"
                        value="<?= $user->patronymic ?>" placeholder="Отчество">
-
-                <input type="date" name="birth_date" class="form"
+                </label>
+                <label>Дата рождения
+                <input type="date" name="birth_date"
                        value="<?= $user->birth_date ?>">
-
-                <input type="email" name="email" class="form"
+                </label>
+                <label>Почта
+                <input type="email" name="email"
                        value="<?= $user->email ?>" placeholder="Email">
-
-                <button class="btn save">Сохранить</button>
-                <a href="<?= app()->route->getUrl('/profile') ?>" class="btn cancel">Назад</a>
-
+                </label>
+                <div class="group">
+                    <button class="btn save in">Сохранить</button>
+                    <a href="<?= app()->route->getUrl('/profile') ?>" class="btn cancel in">Назад</a>
+                </div>
             </form>
-        </div>
-    </div>
+
+
+            <?php if (!empty($user->avatar)): ?>
+                <img src="/uploads/avatars/<?= $user->avatar ?>" alt="Аватар" width="150">
+            <?php endif; ?>
 </div>

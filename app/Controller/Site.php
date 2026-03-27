@@ -40,11 +40,22 @@ class Site
         return (new View())->render('site.departments', ['departments' => $department]);
     }
 
-
-    public function items(): string
+    public function items(Request $request): string
     {
-        $items = Items::all();
-        return (new View())->render('site.items', ['items' => $items]);
+        $query = $request->all()['search'] ?? '';
+
+        if (!empty($query)) {
+            $items = Items::where('item_name', 'LIKE', "%$query%")
+                ->orWhere('sku', 'LIKE', "%$query%")
+                ->get();
+        } else {
+            $items = Items::all();
+        }
+
+        return (new View())->render('site.items', [
+            'items' => $items,
+            'search' => $query
+        ]);
     }
 
     public function item_add(Request $request): string
@@ -123,6 +134,30 @@ class Site
             $user->patronymic = $request->patronymic;
             $user->email = $request->email;
             $user->birth_date = $request->birth_date;
+
+            // Проверка на загрузку аватара
+            if (!empty($_FILES['avatar']['name'])) {
+                $avatar = $_FILES['avatar'];
+
+                // Проверяем тип файла
+                $allowed = ['image/jpeg', 'image/png', 'image/gif'];
+                if (in_array($avatar['type'], $allowed)) {
+                    $ext = pathinfo($avatar['name'], PATHINFO_EXTENSION);
+                    $filename = uniqid() . '.' . $ext;
+                    $destination = __DIR__ . '/../../public/uploads/avatars/' . $filename;
+
+                    // Создаем папку если не существует
+                    if (!is_dir(dirname($destination))) {
+                        mkdir(dirname($destination), 0755, true);
+                    }
+
+                    // Перемещаем файл
+                    move_uploaded_file($avatar['tmp_name'], $destination);
+
+                    // Сохраняем имя файла в БД
+                    $user->avatar = $filename;
+                }
+            }
 
             $user->save();
 

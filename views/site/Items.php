@@ -1,8 +1,17 @@
-<h1>Список товаров</h1>
+<div class="group-row ser">
+<form method="get">
+        <input type="text" name="search"
+               value="<?= $search ?? '' ?>"
+               placeholder="Название или артикул">
+        <button class="btn search">Найти</button>
+    </form>
+</div>
+    <div class="form-table item">
+        <div class="group-row">
+            <h1 class="form-title">Список товаров</h1>
+            <a href="<?= app()->route->getUrl('/item/add') ?>" class="btn save">Добавить товар</a>
+        </div>
     <table class="table">
-        <tr>
-            <td><a href="<?= app()->route->getUrl('/item/add') ?>" class="btn add">Добавить товар</a></td>
-        </tr>
         <tr>
             <th>НАЗВАНИЕ</th>
             <th>АРТИКУЛ</th>
@@ -18,4 +27,5 @@
         </tr>
         <?php endforeach; ?>
     </table>
+    </div>
 
