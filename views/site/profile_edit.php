@@ -33,7 +33,7 @@
 
 </div>
 
-<script id="6s5b5e">
+<script>
     document.getElementById('file').addEventListener('change', function() {
         const label = document.getElementById('avatar-label');
 
