@@ -33,7 +33,7 @@
                     </label>
                 <div class="group">
                 <button class="btn save in">Добавить</button>
-                <a href="<?= app()->route->getUrl('/profile') ?>" class="btn cancel in">Назад</a>
+                <a href="<?= app()->route->getUrl('/staffs') ?>" class="btn cancel in">Назад</a>
                 </div>
             </form>
         </div>

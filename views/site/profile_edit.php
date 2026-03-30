@@ -3,7 +3,7 @@
 
     <form method="post" enctype="multipart/form-data">
         <input type="file" name="avatar" id="file" class="input-file">
-        <label for="file" class="avatar">Изменить аватар</label>
+        <label for="file" class="avatar" id="avatar-label">Изменить аватар</label>
 
                 <label>Фамилия
                 <input type="text" name="surname"
@@ -31,8 +31,14 @@
                 </div>
             </form>
 
-
-            <?php if (!empty($user->avatar)): ?>
-                <img src="/uploads/avatars/<?= $user->avatar ?>" alt="Аватар" width="150">
-            <?php endif; ?>
 </div>
+
+<script id="6s5b5e">
+    document.getElementById('file').addEventListener('change', function() {
+        const label = document.getElementById('avatar-label');
+
+        if (this.files.length > 0) {
+            label.textContent = 'Аватар изменен';
+        }
+    });
+</script>

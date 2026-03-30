@@ -21,7 +21,7 @@ nav{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 24px 60px;
+    padding: 24px 16px;
     border-bottom: 1px solid #f1d7e7;
 }
 
@@ -101,7 +101,7 @@ img{
 .btn {
     padding: 12px 16px;
     margin-top: 12px;
-    font-size: 12px;
+    font-size: 14px;
     border-radius: 50px;
     transition: all 0.3s ease;
     text-align: center;
@@ -132,18 +132,46 @@ img{
     background-color: #f1e0e8;
 }
 
-.search{
+.search
+{
     padding: 12px 16px;
-    background-color: #f1d7e7;
+    background-color: white;
     border: 1px solid #f1d7e7;
-    color: rgba(62, 29, 53, 0.7);
+    color: #3e1d35;
+    transition: all 0.3s ease;
+    font-size: 14px;
     border-radius: 100px;
-    font-size: 16px;
 }
 
 .search:hover{
     background: #ecc6dd;
 }
+
+.input-search{
+    padding: 12px 250px 12px 20px;
+    background-color: white;
+    border: 1px solid #f1d7e7;
+    color: #402237;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    border-radius: 16px;
+}
+
+.input-search:hover{
+    background: #fff5fa;
+}
+
+.group-search{
+    display: flex;
+    flex-direction: row;
+    padding: 0 20px;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+}
+
 
 .form-card{
     display: flex;
@@ -204,8 +232,8 @@ input:focus{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
     padding: 0 8px;
+    align-items: center;
 }
 
 .form-table{

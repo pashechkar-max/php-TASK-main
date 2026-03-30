@@ -1,6 +1,7 @@
-<div class="group-row ser">
+<div class="container">
+<div class="group-search">
 <form method="get">
-        <input type="text" name="search"
+        <input type="text" name="search" class="input-search"
                value="<?= $search ?? '' ?>"
                placeholder="Название или артикул">
         <button class="btn search">Найти</button>
@@ -29,3 +30,4 @@
     </table>
     </div>
 
+</div>
