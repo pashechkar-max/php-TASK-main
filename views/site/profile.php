@@ -6,7 +6,7 @@
             $avatarUrl = '/php-TASK-main/public/uploads/avatars/' . $avatar;     // для тега <img>
             ?>
 
-            <table class="table">
+            <table class="table-container">
                 <tr>
                     <th><img src="<?= $avatarUrl ?>" alt="Аватар"></th>
                     <td>

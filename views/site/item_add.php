@@ -1,7 +1,5 @@
-<div class="container mt-2">
-    <div class="card shadow col-md-4">
-        <div class="card-body">
-            <h2 class="mb-4">Добавить товар</h2>
+        <div class="card">
+            <h2>Добавить товар</h2>
 
             <form method="post">
                 <label>Артикул
@@ -33,5 +31,3 @@
                 </div>
             </form>
         </div>
-    </div>
-</div>

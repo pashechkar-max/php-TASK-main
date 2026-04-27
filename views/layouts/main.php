@@ -11,7 +11,6 @@
 <body>
 <header>
     <nav>
-        <div class="nav-left">
         <?php
         if (!app()->auth::check()):
             ?>
@@ -29,12 +28,9 @@
 
             <a href="<?= app()->route->getUrl('/supplies') ?>">Поставки</a>
             <a href="<?= app()->route->getUrl('/issues') ?>">Списание</a>
-            </div>
 
-            <div class="nav-right">
             <a href="<?= app()->route->getUrl('/profile') ?>">Профиль</a>
             <a href="<?= app()->route->getUrl('/logout') ?>">Выход</a>
-        </div>
         <?php
         endif;
         ?>

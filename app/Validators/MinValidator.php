@@ -1,0 +1,20 @@
+<?php
+
+namespace Validators;
+
+use Src\Validator\AbstractValidator;
+
+class MinValidator extends AbstractValidator
+{
+    protected string $message = 'Поле :field должно быть не меньше минимальной длины';
+
+    public function rule(): bool
+    {
+        if ($this->value === null || $this->value === '') {
+            return true;
+        }
+
+        $min = (int)($this->args[0] ?? 0);
+        return mb_strlen((string)$this->value) >= $min;
+    }
+}

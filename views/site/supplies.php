@@ -1,8 +1,11 @@
-<div class="form-table item">
-    <div class="group-row">
-        <h1 class="form-title">Список поставок</h1>
-    </div>
-<table class="table">
+<div class="header-stack">
+    <h1>Список поставок</h1>
+</div>
+
+<body>
+<div class="table-container">
+<table>
+    <thead>
     <tr>
         <th>НАИМЕНОВАНИЕ</th>
         <th>ДАТА</th>
@@ -11,6 +14,8 @@
         <th>РОЗНИЧНАЯ ЦЕНА</th>
         <th>ПОСТАВЩИК</th>
     </tr>
+    </thead>
+    <tbody>
     <?php foreach ($supplies as $item): ?>
         <tr>
             <td><?= $item->item->item_name ?></td>
@@ -21,5 +26,7 @@
             <td><?= $item->supplier ?></td>
         </tr>
     <?php endforeach; ?>
+    </tbody>
     </table>
 </div>
+</body>

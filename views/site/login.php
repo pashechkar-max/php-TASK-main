@@ -1,5 +1,5 @@
-<div class="form-card">
-    <div class="form-title"><h2>Авторизация</h2></div>
+<div class="card">
+    <h2>Авторизация</h2>
     <h3><?= $message ?? ''; ?></h3>
 
     <?php if (app()->auth::check()): ?>

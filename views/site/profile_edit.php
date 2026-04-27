@@ -1,5 +1,5 @@
-<div class="form-card">
-            <h2 class="form-title">Редактирование профиля</h2>
+<div class="card">
+            <h2>Изменение профиля</h2>
 
     <form method="post" enctype="multipart/form-data">
         <input type="file" name="avatar" id="file" class="input-file">

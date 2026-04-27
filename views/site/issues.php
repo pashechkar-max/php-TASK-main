@@ -1,8 +1,10 @@
-<div class="form-table item">
-<table class="table">
-    <div class="group-row">
-        <h2 class="form-title">Списание</h2>
-    </div>
+<div class="header-stack">
+    <h1>Списание</h1>
+</div>
+
+<div class="table-container">
+<table>
+    <thead>
     <tr>
         <th>НАИМЕНОВАНИЕ</th>
         <th>АРТИКУЛ</th>
@@ -11,6 +13,8 @@
         <th>ДАТА</th>
         <th>КОЛ-ВО</th>
     </tr>
+    </thead>
+    <tbody>
     <?php foreach ($issues as $item): ?>
         <tr>
             <td><?=$item->item->item_name ?></td>
@@ -21,7 +25,9 @@
             <td><?= $item->quantity ?></td>
         </tr>
     <?php endforeach; ?>
+    </tbody>
 </table>
 </div>
+
 
 

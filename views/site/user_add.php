@@ -14,13 +14,32 @@
                 <input type="text" name="patronymic" class="form"
                        value="<?= $user->patronymic ?? '' ?>" placeholder="Отчество">
                 </label>
+                <label>Логин
+                    <input type="text" name="login" class="form <?= !empty($errors['login']) ? 'error-input' : '' ?>"
+                           value="<?= $user->login ?? '' ?>">
+
+                    <?php if (!empty($errors['login'])): ?>
+                        <div class="error-text">
+                            <?= $errors['login'] ?>
+                        </div>
+                    <?php endif; ?>
+                </label>
+                <label>Пароль
+                    <input type="password" name="password" class="form" placeholder="Пароль">
+                </label>
                 <label>Дата рождения
                 <input type="date" name="birth_date" class="form"
                        value="<?= $user->birth_date ?? '' ?>">
                 </label>
                 <label>Почта
-                <input type="email" name="email" class="form"
-                       value="<?= $user->email ?? '' ?>" placeholder="Email">
+                    <input type="email" name="email" class="form <?= !empty($errors['email']) ? 'error-input' : '' ?>"
+                           value="<?= $user->email ?? '' ?>">
+
+                    <?php if (!empty($errors['email'])): ?>
+                        <div class="error-text">
+                            <?= $errors['email'] ?>
+                        </div>
+                    <?php endif; ?>
                 </label>
                     <label>Должность
                     <select name="role_id" class="form-select">

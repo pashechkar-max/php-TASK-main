@@ -1,6 +1,6 @@
-<div class="form-card">
+<div class="card">
 
-    <div class="form-title"><h2>Регистрация</h2></div>
+    <div><h2>Регистрация</h2></div>
 
 <h3><?= $message ?? ''; ?></h3>
 <form method="post">

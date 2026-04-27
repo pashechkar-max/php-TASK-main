@@ -28,6 +28,19 @@ class Site
 
     }
 
+    public function user_delete(Request $request): void
+    {
+        $id = $request->get('id');
+
+        $user = User::find($id);
+
+        if ($user) {
+            $user->delete();
+        }
+
+        app()->route->redirect('/staffs');
+    }
+
     public function issues(): string
     {
         $issue = Issues::all();
@@ -169,15 +182,29 @@ class Site
 
     public function user_add(Request $request): string
     {
+        // Проверка авторизации
         if (!Auth::check()) {
             app()->route->redirect('/login');
             exit;
         }
 
-        $authUser = Auth::user();
-
         if ($request->method === 'POST') {
+            $errors = [];
 
+            if (User::where('login', $request->login)->exists()) {
+                $errors['login'] = 'Логин уже занят';
+            }
+
+            if (User::where('email', $request->email)->exists()) {
+                $errors['email'] = 'Email уже занят';
+            }
+
+            if (!empty($errors)) {
+                return (string)new View('site.user_add', [
+                    'roles' => $roles,
+                    'errors' => $errors,
+                ]);
+            }
             $user = new User();
 
             $user->surname = $request->surname;
@@ -185,11 +212,17 @@ class Site
             $user->patronymic = $request->patronymic;
             $user->login = $request->login;
             $user->email = $request->email;
-            $user->password = $request->password;
+            $user->password = password_hash($request->password, PASSWORD_DEFAULT);
             $user->birth_date = $request->birth_date;
-            $user->role_id = $request->role_id;
 
             $user->save();
+
+            $staff = new Staffs();
+
+            $staff->user_id = $user->id;
+            $staff->role_id = $request->role_id;
+
+            $staff->save();
 
             app()->route->redirect('/staffs');
         }
