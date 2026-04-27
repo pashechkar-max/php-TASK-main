@@ -1,5 +1,6 @@
 <div class="card">
             <h2>Изменение профиля</h2>
+    <h3><?= $message ?? '' ?></h3>
 
     <form method="post" enctype="multipart/form-data">
         <input type="file" name="avatar" id="file" class="input-file">

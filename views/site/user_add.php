@@ -1,5 +1,6 @@
         <div class="form-card">
             <h2 class="form-title">Добавить сотрудника</h2>
+            <h3><?= $message ?? '' ?></h3>
 
             <form method="post">
                 <label>Фамилия

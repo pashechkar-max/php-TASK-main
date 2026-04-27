@@ -2,6 +2,7 @@
 <h1>Список товаров</h1>
     <a href="<?= app()->route->getUrl('/item/add') ?>" class="btn btn-add">+ Добавить товар</a>
 </div>
+<h3><?= $message ?? '' ?></h3>
 
 <div class="toolbar">
 <form method="get" class="search-form">

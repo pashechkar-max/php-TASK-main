@@ -2,20 +2,56 @@
 
 namespace Controller;
 
-use Model\Staffs;
-use Model\Items;
-use Model\Supplies;
 use Model\Departments;
 use Model\Issues;
+use Model\Items;
 use Model\Roles;
-use Src\View;
-use Src\Request;
+use Model\Staffs;
+use Model\Supplies;
 use Model\User;
 use Src\Auth\Auth;
+use Src\Request;
 use Src\Validator\Validator;
+use Src\View;
 
 class Site
 {
+    private function validationMessages(): array
+    {
+        return [
+            'required' => 'Поле :field обязательно для заполнения',
+            'unique' => 'Поле :field должно быть уникальным',
+            'kiril' => 'Поле :field может содержать только кириллицу',
+            'email' => 'Поле :field должно быть в формате email',
+            'login' => 'Поле :field должно быть на латинице без спецсимволов',
+            'password' => 'Поле :field должно содержать строчную, заглавную букву и цифру',
+            'min' => 'Поле :field слишком короткое',
+            'max' => 'Поле :field слишком длинное',
+        ];
+    }
+
+    private function validationMessage(array $errors): string
+    {
+        $messages = [];
+        foreach ($errors as $fieldErrors) {
+            foreach ($fieldErrors as $error) {
+                $messages[] = $error;
+            }
+        }
+
+        return implode('<br>', $messages);
+    }
+
+    private function firstErrors(array $errors): array
+    {
+        $result = [];
+        foreach ($errors as $field => $fieldErrors) {
+            $result[$field] = $fieldErrors[0] ?? '';
+        }
+
+        return $result;
+    }
+
     public function staffs(Request $request): string
     {
 //        $person = Auth::user();
@@ -55,7 +91,23 @@ class Site
 
     public function items(Request $request): string
     {
-        $query = $request->all()['search'] ?? '';
+        $fields = array_merge([
+            'search' => '',
+        ], $request->all());
+
+        $validator = new Validator($fields, [
+            'search' => ['max:100'],
+        ], $this->validationMessages());
+
+        if ($validator->fails()) {
+            return (new View())->render('site.Items', [
+                'items' => Items::all(),
+                'search' => $fields['search'],
+                'message' => $this->validationMessage($validator->errors()),
+            ]);
+        }
+
+        $query = $fields['search'];
 
         if (!empty($query)) {
             $items = Items::where('item_name', 'LIKE', "%$query%")
@@ -65,56 +117,57 @@ class Site
             $items = Items::all();
         }
 
-        return (new View())->render('site.items', [
+        return (new View())->render('site.Items', [
             'items' => $items,
-            'search' => $query
+            'search' => $query,
         ]);
     }
 
     public function item_add(Request $request): string
     {
-        // Проверка авторизации (по желанию можно оставить)
         if (!Auth::check()) {
             app()->route->redirect('/login');
             exit;
         }
 
-        // Если форма отправлена
         if ($request->method === 'POST') {
+            $fields = array_merge([
+                'sku' => '',
+                'item_name' => '',
+                'unit_of_measure' => '',
+                'current_stock' => '',
+                'min_threshold' => '',
+            ], $request->all());
 
-            // Валидация (можешь упростить или расширить)
-            $validator = new Validator($request->all(), [
-                'sku' => ['required'],
-                'item_name' => ['required'],
-                'unit_of_measure' => ['required'],
-                'current_stock' => [],
-                'min_threshold' => []
-            ], [
-                'required' => 'Поле :field пусто'
-            ]);
+            $validator = new Validator($fields, [
+                'sku' => ['required', 'login', 'min:3', 'max:40', 'unique:items,sku'],
+                'item_name' => ['required', 'min:2', 'max:100'],
+                'unit_of_measure' => ['required', 'kiril', 'max:10'],
+                'current_stock' => ['required', 'min:1', 'max:10'],
+                'min_threshold' => ['required', 'min:1', 'max:10'],
+            ], $this->validationMessages());
 
             if ($validator->fails()) {
-                return new View('site.items_add', [
-                    'message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)
+                return new View('site.item_add', [
+                    'message' => $this->validationMessage($validator->errors()),
+                    'errors' => $this->firstErrors($validator->errors()),
+                    'old' => $fields,
                 ]);
             }
 
-            // Создание товара
             $item = new Items();
 
-            $item->sku = $request->sku;
-            $item->item_name = $request->item_name;
-            $item->unit_of_measure = $request->unit_of_measure;
-            $item->current_stock = $request->current_stock;
-            $item->min_threshold = $request->min_threshold;
+            $item->sku = $fields['sku'];
+            $item->item_name = $fields['item_name'];
+            $item->unit_of_measure = $fields['unit_of_measure'];
+            $item->current_stock = $fields['current_stock'];
+            $item->min_threshold = $fields['min_threshold'];
 
             $item->save();
 
-            // Редирект после добавления
             app()->route->redirect('/items');
         }
 
-        // Просто отображение формы
         return new View('site.item_add');
     }
 
@@ -141,35 +194,69 @@ class Site
 
         $user = Auth::user();
         if ($request->method === 'POST') {
+            $fields = array_merge([
+                'surname' => $user->surname ?? '',
+                'name' => $user->name ?? '',
+                'patronymic' => $user->patronymic ?? '',
+                'email' => $user->email ?? '',
+                'birth_date' => $user->birth_date ?? '',
+            ], $request->all());
 
-            $user->surname = $request->surname;
-            $user->name = $request->name;
-            $user->patronymic = $request->patronymic;
-            $user->email = $request->email;
-            $user->birth_date = $request->birth_date;
+            $validator = new Validator($fields, [
+                'surname' => ['required', 'kiril', 'min:2', 'max:50'],
+                'name' => ['required', 'kiril', 'min:2', 'max:50'],
+                'patronymic' => ['kiril', 'max:50'],
+                'birth_date' => ['required'],
+                'email' => ['required', 'email', 'max:100'],
+            ], $this->validationMessages());
 
-            // Проверка на загрузку аватара
+            if ($validator->fails()) {
+                $user->surname = $fields['surname'];
+                $user->name = $fields['name'];
+                $user->patronymic = $fields['patronymic'];
+                $user->email = $fields['email'];
+                $user->birth_date = $fields['birth_date'];
+
+                return new View('site.profile_edit', [
+                    'user' => $user,
+                    'message' => $this->validationMessage($validator->errors()),
+                    'errors' => $this->firstErrors($validator->errors()),
+                ]);
+            }
+
+            $user->surname = $fields['surname'];
+            $user->name = $fields['name'];
+            $user->patronymic = $fields['patronymic'];
+            $user->email = $fields['email'];
+            $user->birth_date = $fields['birth_date'];
+
             if (!empty($_FILES['avatar']['name'])) {
                 $avatar = $_FILES['avatar'];
 
-                // Проверяем тип файла
                 $allowed = ['image/jpeg', 'image/png', 'image/gif'];
-                if (in_array($avatar['type'], $allowed)) {
-                    $ext = pathinfo($avatar['name'], PATHINFO_EXTENSION);
-                    $filename = uniqid() . '.' . $ext;
-                    $destination = __DIR__ . '/../../public/uploads/avatars/' . $filename;
-
-                    // Создаем папку если не существует
-                    if (!is_dir(dirname($destination))) {
-                        mkdir(dirname($destination), 0755, true);
-                    }
-
-                    // Перемещаем файл
-                    move_uploaded_file($avatar['tmp_name'], $destination);
-
-                    // Сохраняем имя файла в БД
-                    $user->avatar = $filename;
+                if (!in_array($avatar['type'], $allowed, true)) {
+                    return new View('site.profile_edit', [
+                        'user' => $user,
+                        'message' => 'Поле avatar: допустимы только JPG, PNG или GIF',
+                    ]);
                 }
+
+                $ext = pathinfo($avatar['name'], PATHINFO_EXTENSION);
+                $filename = uniqid('', true) . '.' . $ext;
+                $destination = __DIR__ . '/../../public/uploads/avatars/' . $filename;
+
+                if (!is_dir(dirname($destination))) {
+                    mkdir(dirname($destination), 0755, true);
+                }
+
+                if (!move_uploaded_file($avatar['tmp_name'], $destination)) {
+                    return new View('site.profile_edit', [
+                        'user' => $user,
+                        'message' => 'Поле avatar: не удалось загрузить файл',
+                    ]);
+                }
+
+                $user->avatar = $filename;
             }
 
             $user->save();
@@ -182,55 +269,70 @@ class Site
 
     public function user_add(Request $request): string
     {
-        // Проверка авторизации
         if (!Auth::check()) {
             app()->route->redirect('/login');
             exit;
         }
 
+        $roles = Roles::all();
+
         if ($request->method === 'POST') {
-            $errors = [];
+            $fields = array_merge([
+                'surname' => '',
+                'name' => '',
+                'patronymic' => '',
+                'login' => '',
+                'password' => '',
+                'birth_date' => '',
+                'email' => '',
+                'role_id' => '',
+            ], $request->all());
 
-            if (User::where('login', $request->login)->exists()) {
-                $errors['login'] = 'Логин уже занят';
-            }
+            $validator = new Validator($fields, [
+                'surname' => ['required', 'kiril', 'min:2', 'max:50'],
+                'name' => ['required', 'kiril', 'min:2', 'max:50'],
+                'patronymic' => ['kiril', 'max:50'],
+                'login' => ['required', 'login', 'min:3', 'max:30', 'unique:users,login'],
+                'password' => ['required', 'password', 'min:8', 'max:64'],
+                'birth_date' => ['required'],
+                'email' => ['required', 'email', 'max:100', 'unique:users,email'],
+                'role_id' => ['required'],
+            ], $this->validationMessages());
 
-            if (User::where('email', $request->email)->exists()) {
-                $errors['email'] = 'Email уже занят';
-            }
-
-            if (!empty($errors)) {
+            if ($validator->fails()) {
                 return (string)new View('site.user_add', [
                     'roles' => $roles,
-                    'errors' => $errors,
+                    'errors' => $this->firstErrors($validator->errors()),
+                    'message' => $this->validationMessage($validator->errors()),
+                    'user' => (object)$fields,
                 ]);
             }
             $user = new User();
 
-            $user->surname = $request->surname;
-            $user->name = $request->name;
-            $user->patronymic = $request->patronymic;
-            $user->login = $request->login;
-            $user->email = $request->email;
-            $user->password = password_hash($request->password, PASSWORD_DEFAULT);
-            $user->birth_date = $request->birth_date;
+            $user->surname = $fields['surname'];
+            $user->name = $fields['name'];
+            $user->patronymic = $fields['patronymic'];
+            $user->login = $fields['login'];
+            $user->email = $fields['email'];
+            $user->password = $fields['password'];
+            $user->birth_date = $fields['birth_date'];
 
             $user->save();
 
             $staff = new Staffs();
 
-            $staff->user_id = $user->id;
-            $staff->role_id = $request->role_id;
+            $staff->user_id = $user->user_id;
+            $staff->role_id = $fields['role_id'];
 
             $staff->save();
 
             app()->route->redirect('/staffs');
         }
 
-        $roles = Roles::all();
-
         return (string)new View('site.user_add', [
             'roles' => $roles,
+            'errors' => [],
+            'user' => (object)[],
         ]);
     }
 
@@ -238,26 +340,33 @@ class Site
     public function signup(Request $request): string
     {
         if ($request->method === 'POST') {
+            $fields = array_merge([
+                'surname' => '',
+                'name' => '',
+                'patronymic' => '',
+                'birth_date' => '',
+                'email' => '',
+                'login' => '',
+                'password' => '',
+            ], $request->all());
 
-            $validator = new Validator($request->all(), [
-                'surname' => ['required'],
-                'name' => ['required'],
-                'patronymic' => [],
+            $validator = new Validator($fields, [
+                'surname' => ['required', 'kiril', 'min:2', 'max:50'],
+                'name' => ['required', 'kiril', 'min:2', 'max:50'],
+                'patronymic' => ['kiril', 'max:50'],
                 'birth_date' => ['required'],
-                'email' => ['required'],
-                'login' => ['required', 'unique:users,login'],
-                'password' => ['required']
-            ], [
-                'required' => 'Поле :field пусто',
-                'unique' => 'Поле :field должно быть уникально'
-            ]);
+                'email' => ['required', 'email', 'max:100', 'unique:users,email'],
+                'login' => ['required', 'login', 'min:3', 'max:30', 'unique:users,login'],
+                'password' => ['required', 'password', 'min:8', 'max:64'],
+            ], $this->validationMessages());
 
-            if($validator->fails()){
-                return new View('site.signup',
-                    ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
+            if ($validator->fails()) {
+                return new View('site.signup', [
+                    'message' => $this->validationMessage($validator->errors()),
+                ]);
             }
 
-            if (User::create($request->all())) {
+            if (User::create($fields)) {
                 app()->route->redirect('/login');
             }
         }
@@ -266,15 +375,30 @@ class Site
 
     public function login(Request $request): string
     {
-        //Если просто обращение к странице, то отобразить форму
         if ($request->method === 'GET') {
             return new View('site.login');
         }
-        //Если удалось аутентифицировать пользователя, то редирект
-        if (Auth::attempt($request->all())) {
+
+        $fields = array_merge([
+            'login' => '',
+            'password' => '',
+        ], $request->all());
+
+        $validator = new Validator($fields, [
+            'login' => ['required', 'login', 'min:3', 'max:30'],
+            'password' => ['required', 'min:1', 'max:64'],
+        ], $this->validationMessages());
+
+        if ($validator->fails()) {
+            return new View('site.login', [
+                'message' => $this->validationMessage($validator->errors()),
+            ]);
+        }
+
+        if (Auth::attempt($fields)) {
             app()->route->redirect('/profile');
         }
-        //Если аутентификация не удалась, то сообщение об ошибке
+
         return new View('site.login', ['message' => 'Неправильные логин или пароль']);
     }
 
@@ -286,4 +410,3 @@ class Site
 
 
 }
-

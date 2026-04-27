@@ -6,6 +6,7 @@
 
     <div class="table-container">
 <table>
+    <thead>
     <tr>
         <th>ДОЛЖНОСТЬ</th>
         <th>ИМЯ</th>
@@ -16,6 +17,7 @@
         <th>ПОДРАЗДЕЛЕНИЕ</th>
         <th></th>
     </tr>
+    </thead>
     <?php foreach ($staffs as $item): ?>
     <tr>
         <td><?=$item->role->role_title ?></td>
