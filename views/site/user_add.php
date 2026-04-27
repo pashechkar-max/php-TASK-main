@@ -7,6 +7,7 @@
                 <input type="text" name="surname" class="form"
                        value="<?= $user->surname ?? '' ?>" placeholder="Фамилия">
                 </label>
+
                 <label>Имя
                 <input type="text" name="name" class="form"
                        value="<?= $user->name ?? '' ?>" placeholder="Имя">
