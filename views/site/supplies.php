@@ -1,7 +1,6 @@
 <div class="header-stack">
     <h1>Поставки</h1>
 </div>
-
 <div class="table-container">
     <table>
         <thead>
