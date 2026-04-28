@@ -1,34 +1,45 @@
-        <div class="card">
-            <h2>Добавить товар</h2>
-            <h3><?= $message ?? '' ?></h3>
+<div class="auth-container">
+    <div class="auth-card">
+        <h2 class="auth-title">Добавить товар</h2>
 
-            <form method="post">
-                <label>Артикул
-                    <input type="text" class="form" placeholder="Артикул" name="sku" required>
-                </label>
+        <form method="post" class="auth-form">
 
-                <label>Наименование
-                    <input type="text" class="form" placeholder="Наименование" name="item_name" required>
-                </label>
+            <label>
+                <span>Артикул</span>
+                <input type="text" name="sku" required>
+            </label>
 
-                <label>Единица измерения
+            <label>
+                <span>Название</span>
+                <input type="text" name="item_name" required>
+            </label>
+
+            <label>
+                <span>Единица измерения</span>
                 <select name="unit_of_measure" class="form-select">
                     <option value="шт">шт</option>
                     <option value="кг">кг</option>
                     <option value="л">л</option>
                 </select>
+            </label>
+
+            <div class="form-row">
+                <label>
+                    <span>Кол-во</span>
+                    <input type="text" name="current_stock">
                 </label>
 
-                <label>Кол-во
-                    <input type="text" class="form" placeholder="Кол-во" name="current_stock">
+                <label>
+                    <span>Мин. остаток</span>
+                    <input type="text" name="min_threshold">
                 </label>
+            </div>
 
-                <label>Мин. остаток
-                    <input type="text" class="form" placeholder="Мин. остаток" name="min_threshold">
-                </label>
-                <div class="group">
-                <button class="btn save in">Добавить</button>
-                <a href="<?= app()->route->getUrl('/items') ?>" class="btn cancel in">Назад</a>
-                </div>
-            </form>
-        </div>
+            <div class="group">
+                <button class="btn-primary">Добавить</button>
+                <a href="<?= app()->route->getUrl('/items') ?>" class="btn-secondary">Назад</a>
+            </div>
+
+        </form>
+    </div>
+</div>

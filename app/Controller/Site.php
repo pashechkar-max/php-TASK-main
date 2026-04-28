@@ -54,22 +54,27 @@ class Site
 
     public function staffs(Request $request): string
     {
-//        $person = Auth::user();
-//        if ($person->staff->role_id != 1) {
-//            app()->route->redirect('/');
-//        }
 
         $staff = Staffs::all();
         return (new View())->render('site.staffs', ['staffs' => $staff]);
 
     }
 
-    public function user_delete(Request $request): void
+    public function user_delete(): void
     {
-        $id = $request->get('id');
+        $id = $_POST['id'] ?? null;
+
+        if (!$id) {
+            app()->route->redirect('/staffs');
+            return;
+        }
+
+        $staff = Staffs::where('user_id', $id)->first();
+        if ($staff) {
+            $staff->delete();
+        }
 
         $user = User::find($id);
-
         if ($user) {
             $user->delete();
         }

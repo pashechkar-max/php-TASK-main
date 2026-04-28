@@ -14,6 +14,4 @@ Route::add(['GET', 'POST'], '/item/add', [Controller\Site::class, 'item_add']);
 Route::add('GET', '/supplies', [Controller\Site::class, 'supplies']);
 Route::add('GET', '/issues', [Controller\Site::class, 'issues']);
 Route::add('GET', '/departments', [Controller\Site::class, 'departments']);
-Route::add('GET', '/user/delete', [Controller\Site::class, 'user_delete']);
-
-
+Route::add('POST', '/user/delete', [Controller\Site::class, 'user_delete']);

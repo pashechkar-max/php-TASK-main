@@ -1,39 +1,32 @@
 <div class="header-stack">
-<h1>Список товаров</h1>
-    <a href="<?= app()->route->getUrl('/item/add') ?>" class="btn btn-add">+ Добавить товар</a>
+    <h1>Список товаров</h1>
+    <a href="<?= app()->route->getUrl('/item/add') ?>" class="btn btn-add">+ Добавить</a>
 </div>
-<h3><?= $message ?? '' ?></h3>
 
-<div class="toolbar">
 <form method="get" class="search-form">
-        <input type="text" name="search"
-               value="<?= $search ?? '' ?>"
-               placeholder="Название или артикул">
-        <button class="btn btn-search ">Найти</button>
-    </form>
-</div>
+    <input type="text" name="search" value="<?= $search ?? '' ?>" placeholder="Название или артикул">
+    <button class="btn btn-add">Найти</button>
+</form>
 
-<body>
-    <div class="table-container">
+<div class="table-container">
     <table>
         <thead>
         <tr>
-            <th>НАЗВАНИЕ</th>
-            <th>АРТИКУЛ</th>
-            <th>ТЕКУЩИЙ ЗАПАС</th>
-            <th>МИНИМАЛЬНОЕ КОЛ-ВО</th>
+            <th>Название</th>
+            <th>Артикул</th>
+            <th>Запас</th>
+            <th>Мин</th>
         </tr>
         </thead>
-        <?php foreach ($items as $item): ?>
         <tbody>
-        <tr>
-            <td><?=$item->item_name ?></td>
-            <td><?= $item->sku ?></td>
-            <td><?= $item->current_stock ?> <?= $item->unit_of_measure ?></td>
-            <td><?= $item->min_threshold ?> <?= $item->unit_of_measure ?></td>
-        </tr>
-        </tbody>
+        <?php foreach ($items as $item): ?>
+            <tr>
+                <td><?= $item->item_name ?></td>
+                <td><?= $item->sku ?></td>
+                <td><?= $item->current_stock ?> <?= $item->unit_of_measure ?></td>
+                <td><?= $item->min_threshold ?> <?= $item->unit_of_measure ?></td>
+            </tr>
         <?php endforeach; ?>
+        </tbody>
     </table>
-    </div>
-</body>
+</div>

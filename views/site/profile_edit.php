@@ -1,45 +1,59 @@
-<div class="card">
-            <h2>Изменение профиля</h2>
-    <h3><?= $message ?? '' ?></h3>
+<div class="auth-container">
+    <div class="auth-card">
 
-    <form method="post" enctype="multipart/form-data">
-        <input type="file" name="avatar" id="file" class="input-file">
-        <label for="file" class="avatar" id="avatar-label">Изменить аватар</label>
+        <h2 class="auth-title">Изменение профиля</h2>
 
-                <label>Фамилия
-                <input type="text" name="surname"
-                       value="<?= $user->surname ?>" placeholder="Фамилия">
-                </label>
-                <label>Имя
-                <input type="text" name="name"
-                       value="<?= $user->name ?>" placeholder="Имя">
-                </label>
-                <label>Отчество
-                <input type="text" name="patronymic"
-                       value="<?= $user->patronymic ?>" placeholder="Отчество">
-                </label>
-                <label>Дата рождения
-                <input type="date" name="birth_date"
-                       value="<?= $user->birth_date ?>">
-                </label>
-                <label>Почта
-                <input type="email" name="email"
-                       value="<?= $user->email ?>" placeholder="Email">
-                </label>
-                <div class="group">
-                    <button class="btn save in">Сохранить</button>
-                    <a href="<?= app()->route->getUrl('/profile') ?>" class="btn cancel in">Назад</a>
-                </div>
-            </form>
+        <?php if (!empty($message)): ?>
+            <div class="auth-message"><?= $message ?></div>
+        <?php endif; ?>
 
+        <form method="post" enctype="multipart/form-data" class="auth-form">
+
+            <input type="file" name="avatar" id="file" class="input-file">
+
+            <label for="file" class="avatar-upload" id="avatar-label">
+                Выбрать аватар
+            </label>
+
+            <label>
+                <span>Фамилия</span>
+                <input type="text" name="surname" value="<?= $user->surname ?>">
+            </label>
+
+            <label>
+                <span>Имя</span>
+                <input type="text" name="name" value="<?= $user->name ?>">
+            </label>
+
+            <label>
+                <span>Отчество</span>
+                <input type="text" name="patronymic" value="<?= $user->patronymic ?>">
+            </label>
+
+            <label>
+                <span>Дата рождения</span>
+                <input type="date" name="birth_date" value="<?= $user->birth_date ?>">
+            </label>
+
+            <label>
+                <span>Почта</span>
+                <input type="email" name="email" value="<?= $user->email ?>">
+            </label>
+
+            <div class="form-actions">
+                <button class="btn-primary">Сохранить</button>
+                <a href="<?= app()->route->getUrl('/profile') ?>" class="btn-secondary">Назад</a>
+            </div>
+
+        </form>
+    </div>
 </div>
 
 <script>
     document.getElementById('file').addEventListener('change', function() {
         const label = document.getElementById('avatar-label');
-
         if (this.files.length > 0) {
-            label.textContent = 'Аватар изменен';
+            label.textContent = 'Аватар выбран';
         }
     });
 </script>

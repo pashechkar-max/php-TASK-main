@@ -1,60 +1,64 @@
-        <div class="form-card">
-            <h2 class="form-title">Добавить сотрудника</h2>
-            <h3><?= $message ?? '' ?></h3>
+<div class="auth-container">
+    <div class="auth-card">
+        <h2 class="auth-title">Добавить сотрудника</h2>
 
-            <form method="post">
-                <label>Фамилия
-                <input type="text" name="surname" class="form"
-                       value="<?= $user->surname ?? '' ?>" placeholder="Фамилия">
+        <form method="post" class="auth-form">
+
+            <div class="form-row">
+                <label>
+                    <span>Фамилия</span>
+                    <input type="text" name="surname">
                 </label>
 
-                <label>Имя
-                <input type="text" name="name" class="form"
-                       value="<?= $user->name ?? '' ?>" placeholder="Имя">
+                <label>
+                    <span>Имя</span>
+                    <input type="text" name="name">
                 </label>
-                <label>Отчество
-                <input type="text" name="patronymic" class="form"
-                       value="<?= $user->patronymic ?? '' ?>" placeholder="Отчество">
-                </label>
-                <label>Логин
-                    <input type="text" name="login" class="form <?= !empty($errors['login']) ? 'error-input' : '' ?>"
-                           value="<?= $user->login ?? '' ?>">
+            </div>
 
-                    <?php if (!empty($errors['login'])): ?>
-                        <div class="error-text">
-                            <?= $errors['login'] ?>
-                        </div>
-                    <?php endif; ?>
-                </label>
-                <label>Пароль
-                    <input type="password" name="password" class="form" placeholder="Пароль">
-                </label>
-                <label>Дата рождения
-                <input type="date" name="birth_date" class="form"
-                       value="<?= $user->birth_date ?? '' ?>">
-                </label>
-                <label>Почта
-                    <input type="email" name="email" class="form <?= !empty($errors['email']) ? 'error-input' : '' ?>"
-                           value="<?= $user->email ?? '' ?>">
+            <label>
+                <span>Отчество</span>
+                <input type="text" name="patronymic">
+            </label>
 
-                    <?php if (!empty($errors['email'])): ?>
-                        <div class="error-text">
-                            <?= $errors['email'] ?>
-                        </div>
-                    <?php endif; ?>
+            <div class="form-row">
+                <label>
+                    <span>Логин</span>
+                    <input type="text" name="login">
                 </label>
-                    <label>Должность
-                    <select name="role_id" class="form-select">
-                        <?php foreach ($roles as $item): ?>
-                            <option value="<?= $item->role_id ?>">
-                                <?= $item->role_title ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                    </label>
-                <div class="group">
-                <button class="btn save in">Добавить</button>
-                <a href="<?= app()->route->getUrl('/staffs') ?>" class="btn cancel in">Назад</a>
-                </div>
-            </form>
-        </div>
+
+                <label>
+                    <span>Пароль</span>
+                    <input type="password" name="password">
+                </label>
+            </div>
+
+            <label>
+                <span>Дата рождения</span>
+                <input type="date" name="birth_date">
+            </label>
+
+            <label>
+                <span>Email</span>
+                <input type="email" name="email">
+            </label>
+
+            <label>
+                <span>Роль</span>
+                <select name="role_id" class="form-select">
+                    <?php foreach ($roles as $item): ?>
+                        <option value="<?= $item->role_id ?>">
+                            <?= $item->role_title ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </label>
+
+            <div class="group">
+                <button class="btn-primary">Добавить</button>
+                <a href="<?= app()->route->getUrl('/staffs') ?>" class="btn-secondary">Назад</a>
+            </div>
+
+        </form>
+    </div>
+</div>
