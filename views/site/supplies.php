@@ -14,6 +14,7 @@
             <th>Поставщик</th>
         </tr>
         </thead>
+
         <tbody>
         <?php foreach ($supplies as $item): ?>
             <tr>
