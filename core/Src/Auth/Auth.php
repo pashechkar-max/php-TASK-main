@@ -35,6 +35,31 @@ class Auth
         return false;
     }
 
+    public static function token(IdentityInterface $user): string
+    {
+        $payload = self::base64UrlEncode((string)$user->getId());
+        return $payload . '.' . self::tokenSignature($payload, $user);
+    }
+
+    public static function attemptToken(string $token): bool
+    {
+        $parts = explode('.', $token);
+        if (count($parts) !== 2) {
+            return false;
+        }
+
+        [$payload, $signature] = $parts;
+        $id = (int)self::base64UrlDecode($payload);
+        $user = self::$user->findIdentity($id);
+
+        if (!$user || !hash_equals(self::tokenSignature($payload, $user), $signature)) {
+            return false;
+        }
+
+        self::login($user);
+        return true;
+    }
+
     //Возврат текущего аутентифицированного пользователя
     public static function user()
     {
@@ -65,5 +90,21 @@ class Auth
         return $token;
     }
 
+    private static function tokenSignature(string $payload, IdentityInterface $user): string
+    {
+        $secret = app()->settings->app['api_token_key'] ?? 'php-task-api-secret';
+        $password = $user->password ?? '';
+        return hash_hmac('sha256', $payload . '|' . $password, $secret);
+    }
+
+    private static function base64UrlEncode(string $value): string
+    {
+        return rtrim(strtr(base64_encode($value), '+/', '-_'), '=');
+    }
+
+    private static function base64UrlDecode(string $value): string
+    {
+        return base64_decode(strtr($value, '-_', '+/')) ?: '';
+    }
 
 }
