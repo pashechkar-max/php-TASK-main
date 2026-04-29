@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1d1ee16582286da61f4296dfc284d914",
+    "content-hash": "4cf449b02844bbeb796a249daf4320b9",
     "packages": [
         {
             "name": "brick/math",
@@ -1092,6 +1092,50 @@
             "time": "2025-06-18T20:36:20+00:00"
         },
         {
+            "name": "pashechkar-max/collect",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pashechkar-max/collect.git",
+                "reference": "aceef5921f12921bf7b49019307cae24614fb3e1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pashechkar-max/collect/zipball/aceef5921f12921bf7b49019307cae24614fb3e1",
+                "reference": "aceef5921f12921bf7b49019307cae24614fb3e1",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4 | ^8.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Collect\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "pashechkar",
+                    "email": "polinausakova921@gmail.com"
+                }
+            ],
+            "description": "Module for working with arrays ",
+            "support": {
+                "issues": "https://github.com/pashechkar-max/collect/issues",
+                "source": "https://github.com/pashechkar-max/collect/tree/master"
+            },
+            "time": "2026-04-29T09:55:21+00:00"
+        },
+        {
             "name": "psr/clock",
             "version": "1.0.0",
             "source": {
@@ -2042,7 +2086,8 @@
     "stability-flags": {
         "illuminate/database": 20,
         "illuminate/events": 20,
-        "nikic/fast-route": 20
+        "nikic/fast-route": 20,
+        "pashechkar-max/collect": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
