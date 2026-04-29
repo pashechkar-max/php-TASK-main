@@ -7,6 +7,7 @@
         <?php endif; ?>
 
         <form method="post" class="auth-form">
+            <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
 
             <div class="form-row">
                 <label>
